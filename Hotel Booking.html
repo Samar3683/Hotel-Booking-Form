@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking</title>
+    <link rel="stylesheet" href="Hotel Booking.css">
+</head>
+<body>
+    <form id="bookingForm">
+        <h1>Hotel Booking Form</h1>
+
+        <br><br>
+        <label for="name" id="name"> Guest Name:</label>
+        <input type="text" id="name" placeholder="Enter guest full name here" required>
+
+        <br><br><label for="email" id="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email here" required>
+       
+        <br><br>
+        <label for="in" id="in" > Check-In Date: </label>
+        <input type="date" id="in" required>
+
+        <br><br>
+        <label for="out" id="out" > Check-Out Date: </label>
+        <input type="date" id="out" required>
+
+        <br><br>
+        <label for="guests" id="guests"> Number of Guests:  </label>
+        <select name="product" id="guests">
+            <option value="none">Total Guests </option>
+            <option  value="1">  1</option>
+            <option  value="2">2</option>
+            <option  value="3">3</option>
+            <option  value="4">4</option>
+            <option  value="5">5</option>
+        </select>
+
+        <br><br>
+        <label for="radio" id="preferences"> Room Preference:</label>&nbsp;&nbsp;
+            <input type="radio" id="single" name="preferences" value="single">
+            <label for="single" id="single" >Single</label>
+
+            <input type="radio" id="double" name="preferences" value="double">
+            <label for="double" id="double" >Double</label>
+
+            <input type="radio" id="suite" name="preferences" value="suite">
+            <label for="suite" id="suite" >Suite</label>
+
+            <br><br>
+            <label for="services" id="services" >Additional Services : </label>
+
+            <input type="checkbox" id="wifi">
+            <label for="wifi" id="wifi">Wi-Fi</label>
+            
+            <input type="checkbox" id="breakfast">
+            <label for="breakfast" id="breakfast">Breakfast</label>
+            
+            <input type="checkbox" id="airport-pickup">
+            <label for="airport-pickup" id="airport-pickup">Airport-Pickup</label>
+
+            <br><br>
+        <input type="submit" id="book" value="Book" > 
+
+    </form>
+
+    <script>
+       document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    // Get form values
+    const guestName = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const checkInDate = document.getElementById('in').value;
+    const checkOutDate = document.getElementById('out').value;
+    const numberOfGuests = document.getElementById('guests').value;
+    const roomPreference = document.querySelector('input[name="preferences"]:checked').value;
+    const additionalServices = [];
+    if (document.getElementById('wifi').checked) additionalServices.push('Wi-Fi');
+    if (document.getElementById('breakfast').checked) additionalServices.push('Breakfast');
+    if (document.getElementById('airport-pickup').checked) additionalServices.push('Airport Pickup');
+
+    if (!validateDates(checkInDate, checkOutDate)) {
+        alert('Invalid dates. Check-Out date must be after Check-In date.');
+        return;
+    }
+
+    const reservation = {
+        guestName,
+        email,
+        checkInDate,
+        checkOutDate,
+        numberOfGuests,
+        roomPreference,
+        additionalServices
+    };
+
+    displayReservationDetails(reservation);
+});
+
+function validateDates(checkInDate, checkOutDate) {
+    const checkIn = new Date(checkInDate);
+    const checkOut = new Date(checkOutDate);
+    return checkOut > checkIn;
+}
+
+function displayReservationDetails(reservation) {
+    const successMessage = document.createElement('div');
+    successMessage.id = 'successMessage';
+    successMessage.innerHTML = `
+        <h3>Reservation Successful!</h3>
+        <p><strong>Guest Name:</strong> ${reservation.guestName}</p>
+        <p><strong>Email:</strong> ${reservation.email}</p>
+        <p><strong>Check-In Date:</strong> ${reservation.checkInDate}</p>
+        <p><strong>Check-Out Date:</strong> ${reservation.checkOutDate}</p>
+        <p><strong>Number of Guests:</strong> ${reservation.numberOfGuests}</p>
+        <p><strong>Room Preference:</strong> ${reservation.roomPreference}</p>
+        <p><strong>Additional Services:</strong> ${reservation.additionalServices.join(', ')}</p>
+    `;
+
+    successMessage.style.marginTop = '20px';
+    successMessage.style.padding = '15px';
+    successMessage.style.border = '1px solid #4CAF50';
+    successMessage.style.backgroundColor = '#e8f5e9';
+    successMessage.style.color = '#2e7d32';
+    successMessage.style.borderRadius = '5px';
+
+    const form = document.getElementById('bookingForm');
+    form.appendChild(successMessage);
+
+    form.reset();
+}
+    </script>
+</body>
+</html>

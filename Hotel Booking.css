@@ -51,7 +51,7 @@ input[id=out]{
 }
 input[type=email]{
     align-items:flex-end;
-    margin-left: 18%;
+    margin-left: 9%;
 }
 input[id=name]{
     align-items:flex-end;
